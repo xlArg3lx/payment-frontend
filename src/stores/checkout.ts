@@ -4,7 +4,6 @@ import type { Product } from "@/api/products";
 import type { Customer } from "@/api/customers";
 import type { Transaction } from "@/api/transactions";
 import type { CardToken } from "@/api/wompi";
-import { productsApi } from "@/api/products";
 import { customersApi } from "@/api/customers";
 import { transactionsApi } from "@/api/transactions";
 import { wompiApi } from "@/api/wompi";
@@ -37,6 +36,7 @@ export const useCheckoutStore = defineStore("checkout", () => {
   const deliveryInfo = ref<DeliveryInfo | null>(null);
   const transaction = ref<Transaction | null>(null);
   const isLoading = ref(false);
+  const shouldRetryPayment = ref(false);
   const error = ref<string | null>(null);
 
   // ─── GETTERS ─────────────────────────────────────────────
@@ -99,6 +99,17 @@ export const useCheckoutStore = defineStore("checkout", () => {
     transaction.value = null;
     error.value = null;
     localStorage.removeItem(STORAGE_KEY);
+  }
+
+  function CLEAR_RETRY() {
+    shouldRetryPayment.value = false;
+  }
+
+  function RETRY_PAYMENT() {
+    shouldRetryPayment.value = true;
+    SET_STEP(2);
+    SET_ERROR(null);
+    SET_TRANSACTION(null);
   }
 
   // ─── ACTIONS (asíncronas) ─────────────────────────────────
@@ -241,6 +252,7 @@ export const useCheckoutStore = defineStore("checkout", () => {
     deliveryInfo,
     transaction,
     isLoading,
+    shouldRetryPayment,
     error,
     // Getters
     totalCents,
@@ -260,6 +272,8 @@ export const useCheckoutStore = defineStore("checkout", () => {
     SET_LOADING,
     SET_ERROR,
     CLEAR_SESSION,
+    RETRY_PAYMENT,
+    CLEAR_RETRY,
     // Actions
     selectProduct,
     tokenizeAndSaveCustomer,

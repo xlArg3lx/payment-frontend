@@ -86,6 +86,14 @@ function onEditCard() {
 onMounted(async () => {
   await loadProducts();
 
+  // Detectar retry de pago fallido
+  if (store.shouldRetryPayment && store.selectedProduct) {
+    selectedProduct.value = store.selectedProduct;
+    store.CLEAR_RETRY();
+    showModal.value = true;
+    return;
+  }
+
   const hasTransaction = await store.recoverSession();
 
   if (hasTransaction && store.isFinished) {
@@ -97,7 +105,6 @@ onMounted(async () => {
     selectedProduct.value = store.selectedProduct;
     showModal.value = true;
   } else if (store.selectedProduct && store.currentStep === 3 && !store.cardToken) {
-    // Tenía resumen abierto pero el cardToken expiró — volvemos al modal
     selectedProduct.value = store.selectedProduct;
     store.SET_STEP(2);
     showModal.value = true;

@@ -19,8 +19,7 @@ function goHome() {
 }
 
 function retryPayment() {
-  store.SET_STEP(2);
-  store.SET_ERROR(null);
+  store.RETRY_PAYMENT();
   router.push("/");
 }
 
