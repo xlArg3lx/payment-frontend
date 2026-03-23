@@ -132,7 +132,7 @@ src/
 | GET | `/api/v1/transactions/:id` | Get transaction status |
 | GET | `/api/v1/deliveries/:transactionId` | Get delivery by transaction |
 
-📮 **Postman Collection:** [Download here](https://github.com/your-username/payment-backend/blob/main/postman_collection.json)
+📮 **Postman Collection:** [Download here](https://github.com/xlArg3lx/payment-backend/blob/master/postman_collection.json)
 
 ---
 
